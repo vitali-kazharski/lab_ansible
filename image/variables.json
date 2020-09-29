@@ -1,0 +1,14 @@
+{
+    "project_id":"devops-lab-summer",
+    "machine_type": "n1-standard-1",
+    "source_image_family": "centos-7",
+    "region": "us-central1",
+    "zone": "us-central1-c",
+    "description":"Homework1: Packer",
+    "name":"imelnik1-webapp-server",
+    "FirstName": "Ilya",
+    "LastName": "Melnik1",
+    "logo": "https://www.datocms-assets.com/2885/1599958723-blog-library-product-packer.jpg",
+    "ssh_username": "obstaclex540",
+    "service_account_json": "/home/obstaclex/servicekey/terraform.json"
+  }
