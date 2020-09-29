@@ -32,8 +32,13 @@
   "provisioners": [
     {
       "type": "file",
-      "source": "file.conf",
-      "destination": "/tmp/file.conf"
+      "source": "webapp-server.conf",
+      "destination": "/tmp/webapp-server.conf"
+    },
+    {
+      "type": "file",
+      "source": "webapp-server.service",
+      "destination": "/tmp/webapp-server.service"
     },
     {
       "type": "shell",
