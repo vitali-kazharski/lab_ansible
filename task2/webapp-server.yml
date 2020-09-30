@@ -44,7 +44,7 @@
       owner: "{{ webapp_user }}"
       group: "{{ webapp_group }}"
     notify: webapp restart
-  - name: Copy Tomcat Service File
+  - name: Copy webapp-server Service File
     become: yes
     copy:
       src: files/webapp-server.service
