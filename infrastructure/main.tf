@@ -6,7 +6,7 @@ provider "google" {
 terraform {
   backend "gcs" {
     bucket = "imelnik1-exit_task"
-    prefix = "packer/"
+    prefix = "ansible/"
   }
 }
 
@@ -39,7 +39,6 @@ module "webapp_instance" {
   zone         = var.zone
   name         = var.webapp_instance_name
   ssh_key      = "${var.ssh_username}:${file(var.ssh_key)}"
-  source_image = var.webapp_image
   subnet_name  = var.webapp_subnet_name
   tags         = ["web", "public", "dev"]
   depends_on   = [module.subnet]

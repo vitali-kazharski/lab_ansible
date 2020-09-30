@@ -16,5 +16,3 @@ variable "webapp_instance_name" {
 }
 variable "webapp_subnet_name" {
 }
-variable "webapp_image" {
-}

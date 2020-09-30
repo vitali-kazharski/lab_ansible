@@ -5,7 +5,6 @@ network_name         = "webapp-network"
 ssh_username         = "centos"
 ssh_key              = "~/.ssh/id_rsa.pub"
 webapp_instance_name = "webapp-server"
-webapp_image         = "imelnik1-webapp-server"
 webapp_subnet_name   = "public-subnet"
 custom_rules = {
   extarnal-firewall = {
@@ -14,6 +13,10 @@ custom_rules = {
     sources = []
     targets = ["web"]
     rules = [
+      {
+        protocol = "icmp"
+        ports    = []
+      },
       {
         protocol = "tcp"
         ports    = ["22", "8080", "80"]
