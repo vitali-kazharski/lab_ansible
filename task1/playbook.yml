@@ -8,25 +8,30 @@
     tomcat_url: https://archive.apache.org/dist/tomcat/tomcat-{{ tomcat_version.split('.')[0] }}/v{{ tomcat_version }}/bin/apache-tomcat-{{ tomcat_version }}.tar.gz
     tomcat_admin_username: admin
     tomcat_admin_password: password
+  
   tasks:
   - name: Install Java 1.8
     yum: 
       name: java-1.8.0-openjdk 
       state: present
+  
   - name: Create tomcat Group
     group:
       name: "{{ tomcat_group }}"
+  
   - name: Add user "tomcat"
     user: 
       name: "{{ tomcat_user }}"
       group: "{{ tomcat_group }}"
       home: /usr/share/tomcat 
       createhome: no 
+  
   - name: Download Tomcat
     get_url:
       url: "{{ tomcat_url }}"
       checksum: "md5:9def3ec8010601a837373a1754e97d9d"
       dest: /opt/
+  
   - name: Unpack Tomcat Archive
     unarchive:
       src: /opt/apache-tomcat-{{ tomcat_version }}.tar.gz
@@ -34,11 +39,13 @@
       remote_src: yes
       owner: "{{ tomcat_user }}"
       group: "{{ tomcat_group }}"
+  
   - name: Symlink install directory
     file: 
       src: /opt/apache-tomcat-{{ tomcat_version }}
       path: /usr/share/tomcat
       state: link
+  
   - name: Copy Users Configuration
     template:
       src: ./templates/tomcat-users.xml.j2
@@ -46,21 +53,25 @@
       owner: "{{ tomcat_user }}"
       group: "{{ tomcat_group }}"
     notify: tomcat restart
+  
   - name: Disable Manager Access Restrictions
     replace:
       path: /usr/share/tomcat/webapps/manager/META-INF/context.xml
       regexp: (\s\+<)(Valve[*>]*/)>
       replace: \1!--\2--
       backup: yes
+  
   - name: Copy Tomcat Service File
     copy:
       src: ./files/tomcat.service
       dest: /usr/lib/systemd/system/tomcat.service
+  
   - name: Ensure Tomcat Service Enabled and Running
     systemd:
       name: tomcat
       state: started
       enabled: yes
+  
   handlers:
   - name: tomcat restart
     systemd:

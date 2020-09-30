@@ -6,17 +6,20 @@
     webapp_url: https://playpit-labs-assets.s3-eu-west-1.amazonaws.com/webapp-server/webapp-server
     FirstName: Ilya
     LastName: Melnik
+
   tasks:
   - name: Create webapp-server Group
     become: yes
     group:
       name: "{{ webapp_group }}"
+  
   - name: Add user "webapp-server"
     become: yes
     user: 
       name: "{{ webapp_user }}"
       group: "{{ webapp_group }}"
       home: /opt/webapp-server
+  
   - name: Creates directory
     become: yes
     file:
@@ -27,6 +30,7 @@
     with_items:
     - /opt/webapp-server/bin
     - /opt/webapp-server/conf
+  
   - name: Download webapp
     become: yes
     get_url:
@@ -36,6 +40,7 @@
       owner: "{{ webapp_user }}"
       group: "{{ webapp_group }}"
       mode: 755
+  
   - name: Copy conf files
     become: yes
     template:
@@ -44,17 +49,20 @@
       owner: "{{ webapp_user }}"
       group: "{{ webapp_group }}"
     notify: webapp restart
+  
   - name: Copy webapp-server Service File
     become: yes
     copy:
       src: files/webapp-server.service
       dest: /usr/lib/systemd/system/webapp-server.service
+  
   - name: Ensure webapp-server Service Enabled and Running
     become: yes
     systemd:
       name: webapp-server
       state: started
       enabled: yes
+  
   handlers:
   - name: webapp restart
     become: yes
