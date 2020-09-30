@@ -49,7 +49,7 @@
     copy:
       src: files/webapp-server.service
       dest: /usr/lib/systemd/system/webapp-server.service
-  - name: Ensure Tomcat Service Enabled and Running
+  - name: Ensure webapp-server Service Enabled and Running
     become: yes
     systemd:
       name: webapp-server
