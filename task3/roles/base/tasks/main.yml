@@ -1,0 +1,26 @@
+- name: Gathering fact
+  setup:
+    gather_subset: all
+
+- name: Create fact directory
+  become: true
+  file:
+    path: /etc/ansible/facts.d/
+    state: directory
+
+- name: Install package
+  become: yes
+  apt: name={{ pkgs }} state=latest
+  when: ansible_os_family == "Debian"
+
+- name: Install package
+  become: yes
+  yum: name={{ pkgs }} state=latest
+  when: ansible_os_family == "RedHat"
+
+- name: Disable requiretty in sudo
+  become: yes
+  lineinfile:
+    dest: /etc/sudoers
+    line: 'Defaults requiretty'
+    state: absent

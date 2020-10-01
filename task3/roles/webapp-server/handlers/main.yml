@@ -1,0 +1,5 @@
+- name: webapp restart
+  become: yes
+  systemd:
+    name: webapp-server
+    state: restarted

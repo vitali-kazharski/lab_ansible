@@ -1,0 +1,9 @@
+- hosts: webservers
+  roles:
+  - role: webapp-server
+    vars:
+      webapp_server_user: webapp
+      webapp_server_home: /opt/webapp-server
+      webapp_server_logo_url: https://playpit-labs-assets.s3-eu-west-1.amazonaws.com/images/Ansible_logo.svg.png
+      student_first_name: Ilya
+      student_last_name: Melnik

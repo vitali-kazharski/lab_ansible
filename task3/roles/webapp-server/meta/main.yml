@@ -1,0 +1,9 @@
+dependencies:
+  - role: base
+    vars:
+      pkgs: ['tree', 'wget', 'iproute']
+  - role: user
+    vars:
+      user: "{{ webapp_server_user}}"
+      group: "{{ webapp_server_group }}"
+      homedir: "{{ webapp_server_home }}"

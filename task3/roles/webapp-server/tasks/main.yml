@@ -1,0 +1,42 @@
+- name: Creates directory
+  become: yes
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ webapp_server_user }}"
+    group: "{{ webapp_server_group }}"
+  with_items:
+    - "{{ webapp_server_home }}/bin"
+    - "{{ webapp_server_home }}/conf"
+
+- name: Download webapp
+  become: yes
+  get_url:
+    url: "{{ webapp_url }}"
+    checksum: "md5:5c3c40891637abc42460e92c82ea4b30."
+    dest: "{{ webapp_server_home }}/bin"
+    owner: "{{ webapp_server_user }}"
+    group: "{{ webapp_server_group }}"
+    mode: 755
+    
+- name: Copy conf files
+  become: yes
+  template:
+    src: webapp-server.conf.j2
+    dest: "{{ webapp_server_home }}/conf/webapp-server.conf"
+    owner: "{{ webapp_server_user }}"
+    group: "{{ webapp_server_group }}"
+  notify: webapp restart
+  
+- name: Copy webapp-server Service File
+  become: yes
+  template:
+    src: webapp-server.service.j2
+    dest: /usr/lib/systemd/system/webapp-server.service
+
+- name: Ensure webapp-server Service Enabled and Running
+  become: yes
+  systemd:
+    name: webapp-server
+    state: started
+    enabled: yes
