@@ -1,0 +1,3 @@
+- name: Install tomcat version
+  debug:
+    msg: "{{ tomcat_version }}"

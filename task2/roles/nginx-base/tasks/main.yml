@@ -1,0 +1,7 @@
+- name: Install nginx version
+  debug:
+    msg: Install {{ nginx_version }}
+- name: Copy config file
+  debug:
+    msg: "{{ file }}"
+  notify: restart nginx

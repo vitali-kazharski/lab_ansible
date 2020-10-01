@@ -1,0 +1,3 @@
+---
+nginx_version: nginx 1.16
+file: main file

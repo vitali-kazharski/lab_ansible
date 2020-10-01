@@ -1,0 +1,11 @@
+dependencies:
+  - role: base
+    vars:
+      command: something for tomcat
+  - role: user
+    vars:
+      user: tomcat
+      group: tomcat
+  - role: java
+    vars:
+      java_version : openjdk-1.8
