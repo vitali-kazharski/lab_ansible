@@ -1,2 +1,0 @@
-[app-server]
-lean_centos7 ansible_connection=docker

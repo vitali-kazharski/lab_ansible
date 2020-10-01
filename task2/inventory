@@ -1,2 +1,0 @@
-[webapp-server]
-34.69.188.34 ansible_user=devops ansible_ssh_private_key_file=/home/obstaclex/.ssh/id_rsa
