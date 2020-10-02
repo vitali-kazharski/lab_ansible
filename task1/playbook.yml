@@ -1,0 +1,13 @@
+- hosts: localhost
+  connection: local
+  gather_facts: no
+
+  tasks:
+  - include_vars: vars/users-{{ team_name | mandatory }}.yml
+  - debug:
+      var: tomcat_users
+  - template:
+      src: tomcat-users.xml.j2
+      dest: tomcat_users-rendered.xml
+    vars:
+      users: "{{ tomcat_users }}"
