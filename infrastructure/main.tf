@@ -35,11 +35,29 @@ module "firewall" {
 }
 
 module "webapp_instance" {
-  source       = "./modules/instance"
-  zone         = var.zone
-  name         = var.webapp_instance_name
-  ssh_key      = "${var.ssh_username}:${file(var.ssh_key)}"
-  subnet_name  = var.webapp_subnet_name
-  tags         = ["web", "public", "dev"]
-  depends_on   = [module.subnet]
+  source      = "./modules/instance"
+  zone        = var.zone
+  name        = var.webapp_instance_name
+  ssh_key     = "${var.ssh_username}:${file(var.ssh_key)}"
+  subnet_name = var.webapp_subnet_name
+  tags        = ["web", "public", "dev"]
+  depends_on  = [module.subnet]
+}
+module "db_instance" {
+  source      = "./modules/instance"
+  zone        = var.zone
+  name        = "db"
+  ssh_key     = "${var.ssh_username}:${file(var.ssh_key)}"
+  subnet_name = var.webapp_subnet_name
+  tags        = ["web", "public", "dev"]
+  depends_on  = [module.subnet]
+}
+module "check-db_instance" {
+  source      = "./modules/instance"
+  zone        = var.zone
+  name        = "check-db"
+  ssh_key     = "${var.ssh_username}:${file(var.ssh_key)}"
+  subnet_name = var.webapp_subnet_name
+  tags        = ["web", "public", "dev"]
+  depends_on  = [module.subnet]
 }

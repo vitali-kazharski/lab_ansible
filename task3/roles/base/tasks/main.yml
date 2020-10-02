@@ -3,10 +3,18 @@
     gather_subset: all
 
 - name: Create fact directory
-  become: true
+  become: yes
   file:
     path: /etc/ansible/facts.d/
     state: directory
+    mode: 0755
+
+- name: Install Custom Facts
+  become: yes
+  copy:
+    src: custom.fact
+    dest: /etc/ansible/facts.d/
+    mode: 0644
 
 - name: Install package
   become: yes

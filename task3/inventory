@@ -1,5 +1,10 @@
-[webservers]
-35.232.99.155
+[appservers]
+webapp   ansible_host=35.232.99.155
+check-db ansible_host=34.123.214.136
+
+
+[dbservers]
+db       ansible_host=35.222.162.234
 
 [all:vars]
 ansible_user=centos
