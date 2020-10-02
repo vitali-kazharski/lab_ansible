@@ -1,4 +1,0 @@
-dependencies:
-  - role: nginx-base
-    vars:
-      file: another file

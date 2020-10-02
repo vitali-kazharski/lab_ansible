@@ -1,4 +1,0 @@
-dependencies:
-  - role: base
-    vars:
-      command: something for java

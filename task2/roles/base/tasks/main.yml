@@ -1,3 +1,0 @@
-- name: Command 
-  debug:
-    msg: command which doing {{ command }}

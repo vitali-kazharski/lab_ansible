@@ -1,8 +1,0 @@
-[appservers]
-host[1:5]
-
-[webservers]
-host[1:2]
-
-[all:vars]
-ansible_connection=local

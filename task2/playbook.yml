@@ -1,7 +1,0 @@
-- hosts: webservers
-  roles:
-  - role: nginx-custom
-
-- hosts: appservers
-  roles:
-  - role: tomcat

@@ -1,9 +1,0 @@
-- hosts: all
-  tasks:
-  - name: Port check
-    shell: netstat -toulpan | grep -E "3306|8080"
-    failed_when: False
-    changed_when: False
-    register: port
-  - debug:
-      var: port.stdout_lines

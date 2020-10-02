@@ -1,3 +1,0 @@
-- name: Restart nginx
-  debug:
-    msg: restart-nginx

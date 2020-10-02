@@ -1,6 +1,0 @@
-- name: Print user
-  debug:
-    msg: "{{ user }}"
-- name: Print group
-  debug:
-    msg: "{{ group }}"

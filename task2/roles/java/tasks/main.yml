@@ -1,3 +1,0 @@
-- name: Install java version
-  debug:
-    msg: Install {{ java_version }}
