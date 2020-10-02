@@ -1,0 +1,27 @@
+- name: Install pip package
+  become: yes
+  pip:
+    name: cryptography
+    state: present
+
+- name: install .my.cnf with credentials
+  template:
+    src: 'my.cnf.j2'
+    dest: ~/.my.cnf
+    mode: '0400'
+
+- name: Create MySQL user
+  mysql_user:
+    name: "{{ mysql_user | mandatory }}"
+    password: "{{ mysql_password | mandatory }}"
+    priv: '*.*:ALL,GRANT'
+    state: present
+    login_user: root
+    login_password: "{{ mysql_root_password | mandatory }}"
+
+- name: Create MySQL db
+  mysql_db:
+    name: "{{ mysql_db_user_database | mandatory }}"
+    state: present
+    login_user: root
+    login_password: "{{ mysql_root_password | mandatory }}"

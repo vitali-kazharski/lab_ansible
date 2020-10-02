@@ -4,8 +4,8 @@ After=network.target
 
 [Service]
 Type=simple
-EnvironmentFile=-/opt/webapp-server/conf/webapp-server.conf
-ExecStart=/opt/webapp-server/bin/webapp-server
+EnvironmentFile=-{{ webapp_server_home }}/conf/webapp-server.conf
+ExecStart={{ webapp_server_home }}/bin/webapp-server
 ExecStop=/bin/kill -s QUIT $MAINPID
 
 [Install]

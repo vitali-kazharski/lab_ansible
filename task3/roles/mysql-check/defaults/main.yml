@@ -1,0 +1,4 @@
+mysql_check_url: https://playpit-labs-assets.s3-eu-west-1.amazonaws.com/mysql-check/mysql-check
+mysql_check_group: "{{ mysql_check_user }}"
+mysql_check_port: 8080
+mysql_check_home: /opt/mysql-check

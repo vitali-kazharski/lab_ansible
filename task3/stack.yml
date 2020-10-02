@@ -6,4 +6,15 @@
       webapp_server_home: /opt/webapp-server
       webapp_server_logo_url: https://playpit-labs-assets.s3-eu-west-1.amazonaws.com/images/Ansible_logo.svg.png
       student_first_name: Ilya
-      student_last_name: Melnik
+      student_last_name: Melnik1
+
+  - role: mysql-db-user
+    vars:
+      mysql_root_password: password
+      mysql_db_user_database: check_db
+      mysql_user: user_for_check
+      mysql_password: check
+
+  - role: mysql-check
+    vars:
+      mysql_check_user: mysql-check

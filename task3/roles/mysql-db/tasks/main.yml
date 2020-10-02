@@ -1,0 +1,8 @@
+- name: Install Mysql
+  become: yes
+  shell: |
+      rpm -Uvh https://repo.mysql.com/mysql80-community-release-el7-3.noarch.rpm
+      yum --enablerepo=mysql80-community install mysql-community-server -y
+      mysqld --initialize-insecure --user=mysql
+      systemctl start mysqld
+      echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '{{ root_password | mandatory }}';" | mysql -u root --skip-password

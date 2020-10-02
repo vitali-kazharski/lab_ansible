@@ -1,5 +1,5 @@
 [webservers]
-34.123.214.136
+35.232.99.155
 
 [all:vars]
 ansible_user=centos
