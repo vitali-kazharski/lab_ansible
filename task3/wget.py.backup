@@ -1,0 +1,43 @@
+#!/usr/bin/python
+
+import urllib.request
+import os
+import hashlib
+import requests
+from ansible.module_utils.basic import *
+
+
+def main():
+    module = AnsibleModule(
+        argument_spec=dict(
+            src=dict(required=True, type='str'),
+            dest=dict(required=True, type='str')
+        )
+    )
+    if os.path.isdir(module.params['dest']):
+        dest = f"{module.params['dest']}/{module.params['src'].split('/')[-1]}"
+    else:
+        dest = module.params['dest']
+    m = hashlib.md5()
+    r = requests.get(module.params['src'])
+    for data in r.iter_content(8192):
+        m.update(data)
+        remote_hash = m.hexdigest()
+    if os.path.exists(dest):
+        local_hash = hashlib.md5(open(dest, 'rb').read()).hexdigest()
+        if local_hash == remote_hash:
+            module.exit_json(changed=False)
+        else:
+            with urllib.request.urlopen(module.params['src']) as response, open(dest, 'wb') as out_file:
+                data = response.read()  # a `bytes` object
+                out_file.write(data)
+                module.exit_json(changed=True)
+    else:
+        with urllib.request.urlopen(module.params['src']) as response, open(dest, 'wb') as out_file:
+                data = response.read()  # a `bytes` object
+                out_file.write(data)
+                module.exit_json(changed=True)
+
+
+if __name__ == '__main__':
+    main()

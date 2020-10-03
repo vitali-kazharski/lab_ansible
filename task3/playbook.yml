@@ -1,0 +1,9 @@
+- name: test remote_copy module 
+  hosts: localhost 
+  gather_facts: false 
+
+  tasks: 
+  - name: do a remote copy
+    wget:
+      src: https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.9/bin/apache-tomcat-8.5.9.tar.gz
+      dest: .
