@@ -4,6 +4,11 @@
 
   tasks: 
   - name: do a remote copy
+    become: yes
     wget:
       src: https://archive.apache.org/dist/tomcat/tomcat-8/v8.5.9/bin/apache-tomcat-8.5.9.tar.gz
-      dest: .
+      dest: ./file.gz
+      checksum: "sha1:3c800e7affdf93bf4dbcf44bd852904449b786f6"
+      owner: obstaclex
+      group: obstaclex
+      mode: 777
