@@ -8,7 +8,7 @@ short_description: This is my wget module
 
 version_added: "1.0.0"
 
-description: Module for download files with checksum test
+description: Module for download files with test checksum
 
 options:
     src:
@@ -134,11 +134,11 @@ def download(src, dest):
 
 
 def check_all(file, src, owner=None, group=None, mode=None):
-    ownerlist_false = [pwd.getpwuid(os.stat(file).st_uid).pw_name, None]
-    grouplist_false = [grp.getgrgid(os.stat(file).st_gid).gr_name, None]
-    modelist_false = [oct(os.stat(file).st_mode)[-4:],
-                      oct(os.stat(file).st_mode)[-3:], None]
     if os.path.exists(file):
+        ownerlist_false = [pwd.getpwuid(os.stat(file).st_uid).pw_name, None]
+        grouplist_false = [grp.getgrgid(os.stat(file).st_gid).gr_name, None]
+        modelist_false = [oct(os.stat(file).st_mode)[-4:],
+                      oct(os.stat(file).st_mode)[-3:], 'None']
         if local_hash(file) == remote_hash(src):
             if owner not in ownerlist_false or group not in grouplist_false or mode not in modelist_false:
                 return check_owner_group_mode(file, owner, group, mode)
@@ -150,6 +150,10 @@ def check_all(file, src, owner=None, group=None, mode=None):
             return True
     else:
         download(src, file)
+        ownerlist_false = [pwd.getpwuid(os.stat(file).st_uid).pw_name, None]
+        grouplist_false = [grp.getgrgid(os.stat(file).st_gid).gr_name, None]
+        modelist_false = [oct(os.stat(file).st_mode)[-4:],
+                      oct(os.stat(file).st_mode)[-3:], 'None']
         if owner not in ownerlist_false or group not in grouplist_false or mode not in modelist_false:
             return check_owner_group_mode(file, owner, group, mode)
         return True
@@ -166,7 +170,7 @@ def check_owner_group_mode(file, owner=None, group=None, mode=None):
     else:
         gid = grp.getgrnam(group).gr_gid
         os.chown(file, -1, gid)
-    if mode == None:
+    if mode == 'None':
         pass
     else:
         os.chmod(file, int('0o{}'.format(mode), base=8))
