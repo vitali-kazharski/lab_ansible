@@ -31,3 +31,8 @@ variable "ext_ip" {
 variable "tags" {
   default = [""]
 }
+variable "labels" {
+  type        = map(string)
+  default = {
+  }
+}

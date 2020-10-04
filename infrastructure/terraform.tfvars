@@ -2,7 +2,7 @@ project_id           = "devops-lab-summer"
 region               = "us-central1"
 zone                 = "us-central1-c"
 network_name         = "webapp-network"
-ssh_username         = "centos"
+ssh_username         = "obstaclex"
 ssh_key              = "~/.ssh/id_rsa.pub"
 webapp_instance_name = "webapp-server"
 webapp_subnet_name   = "public-subnet"
@@ -11,7 +11,7 @@ custom_rules = {
     action  = "allow"
     ranges  = ["0.0.0.0/0"]
     sources = []
-    targets = ["web"]
+    targets = ["prod","test"]
     rules = [
       {
         protocol = "icmp"

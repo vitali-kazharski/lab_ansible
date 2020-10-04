@@ -6,6 +6,7 @@ resource "google_compute_instance" "default" {
   zone         = var.zone
   machine_type = var.machine_type
   tags         = var.tags
+  labels       = var.labels
   metadata = {
     ssh-keys = var.ssh_key
   }

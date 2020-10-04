@@ -34,30 +34,56 @@ module "firewall" {
   depends_on   = [module.network]
 }
 
-module "webapp_instance" {
+module "test_webapp_instance" {
   source      = "./modules/instance"
   zone        = var.zone
-  name        = var.webapp_instance_name
+  name        = "test-webapp"
   ssh_key     = "${var.ssh_username}:${file(var.ssh_key)}"
   subnet_name = var.webapp_subnet_name
-  tags        = ["web", "public", "dev"]
-  depends_on  = [module.subnet]
+  labels = {
+    env      = "test",
+    instance = "web"
+  }
+  tags       = ["web", "test"]
+  depends_on = [module.subnet]
 }
-module "db_instance" {
+module "test_db_instance" {
   source      = "./modules/instance"
   zone        = var.zone
-  name        = "db"
+  name        = "test-db"
   ssh_key     = "${var.ssh_username}:${file(var.ssh_key)}"
   subnet_name = var.webapp_subnet_name
-  tags        = ["web", "public", "dev"]
-  depends_on  = [module.subnet]
+  labels = {
+    env      = "test",
+    instance = "db"
+  }
+  tags       = ["db", "test"]
+  depends_on = [module.subnet]
 }
-module "check-db_instance" {
+
+module "prod_webapp_instance" {
   source      = "./modules/instance"
   zone        = var.zone
-  name        = "check-db"
+  name        = "prod-webapp"
   ssh_key     = "${var.ssh_username}:${file(var.ssh_key)}"
   subnet_name = var.webapp_subnet_name
-  tags        = ["web", "public", "dev"]
-  depends_on  = [module.subnet]
+  labels = {
+    env      = "prod",
+    instance = "web"
+  }
+  tags       = ["web", "prod"]
+  depends_on = [module.subnet]
+}
+module "prod_db_instance" {
+  source      = "./modules/instance"
+  zone        = var.zone
+  name        = "prod-db"
+  ssh_key     = "${var.ssh_username}:${file(var.ssh_key)}"
+  subnet_name = var.webapp_subnet_name
+  labels = {
+    env      = "prod",
+    instance = "db"
+  }
+  tags       = ["db", "prod"]
+  depends_on = [module.subnet]
 }
