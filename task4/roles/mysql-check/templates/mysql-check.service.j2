@@ -1,0 +1,12 @@
+[Unit]
+Description=Mysql-check
+After=network.target
+
+[Service]
+Type=simple
+EnvironmentFile=-{{mysql_check_home}}/conf/mysql-check.conf
+ExecStart={{mysql_check_home}}/bin/mysql-check
+ExecStop=/bin/kill -s QUIT $MAINPID
+
+[Install]
+WantedBy=multi-user.target

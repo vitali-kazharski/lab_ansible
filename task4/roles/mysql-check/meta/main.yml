@@ -1,0 +1,6 @@
+dependencies:
+  - role: user
+    vars:
+      user: "{{ mysql_check_user }}"
+      group: "{{ mysql_check_group }}"
+      homedir: "{{ mysql_check_home }}"

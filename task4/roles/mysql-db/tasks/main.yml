@@ -1,0 +1,27 @@
+- name: install mysql repo rpm
+  become: yes
+  yum:
+    name: https://repo.mysql.com/mysql80-community-release-el7-3.noarch.rpm
+    state: present
+
+- name: Install Mysql
+  become: yes
+  yum:
+    name:
+    - mysql-community-server
+    - MySQL-python
+    - mysql
+    state: present
+  notify: Initialize mysql without a root password
+
+- meta: flush_handlers
+
+- name: Start the MySQL service
+  become: yes
+  service: 
+    name: mysqld
+    state: started
+    enabled: true
+  notify: Set initial mysql root password
+
+- meta: flush_handlers

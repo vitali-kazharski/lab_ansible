@@ -1,0 +1,7 @@
+dependencies:
+  - role: base
+    vars:
+      pkgs: ['python-pip','python2-PyMySQL']
+  - role: mysql-db
+    vars:
+      root_password: "{{ mysql_root_password | mandatory }}"

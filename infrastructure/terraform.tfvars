@@ -11,7 +11,7 @@ custom_rules = {
     action  = "allow"
     ranges  = ["0.0.0.0/0"]
     sources = []
-    targets = ["prod","test"]
+    targets = ["prod", "test"]
     rules = [
       {
         protocol = "icmp"
@@ -19,7 +19,7 @@ custom_rules = {
       },
       {
         protocol = "tcp"
-        ports    = ["22", "8080", "80", "3306"]
+        ports    = ["22", "8080", "3306", "9090"]
       }
     ]
   },

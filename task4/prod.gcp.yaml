@@ -8,3 +8,4 @@ service_account_file: /home/obstaclex/servicekey/terraform.json
 groups:
   web: "'webapp' in name"
   db: "'db' in name"
+  check: "'check' in name"
