@@ -1,0 +1,6 @@
+- name: Initialize mysql without a root password
+  become: yes
+  command: mysqld --initialize-insecure --user=mysql
+
+- name: Set initial mysql root password
+  shell: echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '{{ root_password | mandatory }}';" | mysql -u root --skip-password

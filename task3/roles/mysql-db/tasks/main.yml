@@ -1,8 +1,27 @@
+- name: install mysql repo rpm
+  become: yes
+  yum:
+    name: https://repo.mysql.com/mysql80-community-release-el7-3.noarch.rpm
+    state: present
+
 - name: Install Mysql
   become: yes
-  shell: |
-      rpm -Uvh https://repo.mysql.com/mysql80-community-release-el7-3.noarch.rpm
-      yum --enablerepo=mysql80-community install mysql-community-server -y
-      mysqld --initialize-insecure --user=mysql
-      systemctl start mysqld
-      echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '{{ root_password | mandatory }}';" | mysql -u root --skip-password
+  yum:
+    name:
+    - mysql-community-server
+    - MySQL-python
+    - mysql
+    state: present
+  notify: Initialize mysql without a root password
+
+- meta: flush_handlers
+
+- name: Start the MySQL service
+  become: yes
+  service: 
+    name: mysqld
+    state: started
+    enabled: true
+  notify: Set initial mysql root password
+
+- meta: flush_handlers
