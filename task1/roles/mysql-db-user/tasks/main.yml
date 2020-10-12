@@ -1,7 +1,9 @@
 - name: Install pip package
   become: yes
   pip:
-    name: cryptography
+    name: 
+      - cryptography
+      - pymysql
     state: present
 
 - name: install .my.cnf with credentials

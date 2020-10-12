@@ -1,0 +1,101 @@
+- name: Create simple infrastructure
+  hosts: local
+  connection: local
+  vars_files:
+    - vars.yml
+
+  tasks:
+    - name: create VPC
+      ec2_vpc_net:
+        name: "{{ vpc_name }}"
+        cidr_block: "{{ vpc_cidr }}"
+        region: "{{ region }}"
+        tags: "{{ tags }}"
+      register: vpc
+
+    - name: Create first subnet
+      ec2_vpc_subnet:
+        state: present
+        vpc_id: "{{ vpc.vpc.id }}"
+        az: "{{ region }}a"
+        cidr: "{{ fisrt_cidr }}"
+        tags: "{{ tags | default({})  | combine({item.key: item.value}) }}"
+      loop:
+        - { key: "Name", value: "{{ vpc_name }}-subnet-{{ region }}a" }
+      register: first_subnet
+
+    - name: Create second subnet
+      ec2_vpc_subnet:
+        state: present
+        vpc_id: "{{ vpc.vpc.id }}"
+        az: "{{ region }}b"
+        cidr: "{{ second_cidr }}"
+        tags: "{{ tags | default({})  | combine({item.key: item.value}) }}"
+      loop:
+        - { key: "Name", value: "{{ vpc_name }}-subnet-{{ region }}b" }
+      register: second_subnet
+
+    - name: Create IGW
+      ec2_vpc_igw:
+        vpc_id: "{{ vpc.vpc.id }}"
+        region: "{{ region }}"
+        state: present
+        tags: "{{ tags | default({})  | combine({item.key: item.value}) }}"
+      loop:
+        - { key: "Name", value: "{{ vpc_name }}-igw" }
+      register: igw
+
+    - name: Route IGW
+      ec2_vpc_route_table:
+        vpc_id: "{{ vpc.vpc.id }}"
+        region: "{{ region }}"
+        subnets:
+          - "{{ first_subnet.results[0].subnet.id }}"
+          - "{{ second_subnet.results[0].subnet.id }}"
+        routes:
+          - dest: 0.0.0.0/0
+            gateway_id: "{{ igw.results[0].gateway_id }}"
+        tags: "{{ tags | default({})  | combine({item.key: item.value}) }}"
+      loop:
+        - { key: "Name", value: "{{ vpc_name }}-public" }
+
+    - name: Create Security Group
+      ec2_group:
+        name: Web
+        description: Web Security Group
+        vpc_id: "{{ vpc.vpc.id }}"
+        region: "{{ region }}"
+        rules:
+          - proto: tcp
+            ports: "{{ allowed_ports }}"
+            cidr_ip: 0.0.0.0/0
+        tags: "{{ tags | default({})  | combine({item.key: item.value}) }}"
+      loop:
+        - { key: "Name", value: "{{ vpc_name }}-sg" }
+      register: security_group
+
+    - name: Query for existing instance
+      command: aws ec2 describe-instances --region {{ region }} --filter Name=tag:Name,Values={{ vpc_name }}-instance --query "Reservations[].Instances[].PrivateIpAddress" --output text
+      register: private_ip
+
+    - name: Create EC2 Instance
+      ec2:
+        count: 1
+        image: "{{ source_ami }}"
+        wait: yes
+        instance_type: "{{ instance_type }}"
+        region: "{{ region }}"
+        group_id: "{{ security_group.results[0].group_id }}"
+        vpc_subnet_id: "{{ first_subnet.results[0].subnet.id }}"
+        assign_public_ip: yes
+        wait: yes
+        instance_tags: "{{ tags | default({})  | combine({item.key: item.value}) }}"
+      loop:
+        - { key: "Name", value: "{{ vpc_name }}-instance" }
+      when: private_ip.stdout == ''
+      register: instance
+
+    - name: Show public ip
+      debug:
+        msg: "{{ instance.results[0].instances[0].public_ip }}"
+      when: private_ip.stdout == ''

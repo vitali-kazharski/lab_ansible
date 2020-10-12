@@ -1,14 +1,14 @@
-- name: Test wget module
-  hosts: localhost 
+- name: Create simple infrastructure
+  hosts: aws_ec2
   vars:
-    tomcat_version: "8.5.30"
-  tasks: 
-  - name: Download Tomcat
-    become: yes
-    wget:
-      src: "{{ tomcat_version | tomcat_url }}"
-      dest: .
-      checksum: "{{ tomcat_version | tomcat_checksum }}"
-      owner: nobody
-      group: nogroup
-      mode: 1111
+    package: mysql-community-server
+  tasks:
+  - name: Gather the package facts
+    package_facts:
+      manager: auto
+
+
+  - name: Check whether a package called foobar is installed
+    debug:
+      msg: "{{ ansible_facts.packages[package][0].version }} {{ package }} version are installed!"
+    when: "'{{ package }}' in ansible_facts.packages"

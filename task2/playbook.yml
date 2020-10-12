@@ -1,9 +1,0 @@
-- name: Installing tomcat
-  hosts: localhost
-  vars:
-    tomcat_version: "8.5.30"
-  tasks:
-    - debug:
-        msg: url = {{ tomcat_version | tomcat_url }}
-    - debug:
-        msg: checksum = {{ tomcat_version | tomcat_checksum }}

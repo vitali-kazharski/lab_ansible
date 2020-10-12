@@ -1,0 +1,23 @@
+- name: Add group
+  become: yes
+  group:
+    name: "{{ group }}"
+  
+- name: Add user 
+  become: yes
+  user:
+    name: "{{ user | mandatory }}"
+    group: "{{ group | default(omit) }}"
+    home: "{{ homedir | default(omit) }}"
+    create_home: "{{ create_home | default(omit) }}"
+    system: "{{ system_user | default(omit) }}"
+    shell: "{{ shell | default(omit) }}"
+
+- name: Add sudoers
+  become: yes
+  template:
+    src: user.sudoers.j2
+    dest: /etc/sudoers.d/{{ user }}
+    owner: root
+    group: root
+    mode: 0440

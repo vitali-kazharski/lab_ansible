@@ -1,0 +1,7 @@
+plugin: aws_ec2
+boto_profile: default
+regions:
+  - us-east-1
+filters:
+  tag:Name: imelnik1-vpc-instance
+# Можно отфильтровать по любому тегу
